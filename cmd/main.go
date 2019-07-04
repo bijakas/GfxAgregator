@@ -88,7 +88,7 @@ func buildGraphQlMutationString(vb VideoBank) string{
             videoType: "`+"MOVIES"+`",
             genre: ["HORROR", "FANTASY"], 
             year: 2019,
-            duration: 0, 
+            duration: `+formatMinutesDuration(vb.Duration)+`, 
             contentId: `+vb.ContentId+`, 
             synopsis: "`+jsonEscape(vb.Synopsis)+`",
             cast: "`+jsonEscape(vb.Cast)+`",
@@ -1845,6 +1845,14 @@ func makeGraphQlRequest(requestString string) {
 	fmt.Println("Status:", resp.Status)
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println("Body:", string(body))
+}
+
+func formatMinutesDuration (inMinutes string) string {
+    intMinutes, _ := strconv.Atoi(inMinutes)
+    hour := intMinutes / 60
+    minute := intMinutes % 60
+    str := fmt.Sprintf("%02d:%02d:00", hour, minute)
+    return str
 }
 
 
